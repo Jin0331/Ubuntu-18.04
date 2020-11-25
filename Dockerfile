@@ -1,7 +1,7 @@
 FROM ubuntu:18.04
 MAINTAINER sempre813
 
-# Setup build environment for libpam
+ENV DEBIAN_FRONTEND=noninteractive  # 중요
 RUN apt-get update -y
 
 
@@ -9,7 +9,7 @@ RUN apt-get update -y
 RUN \
   apt-get update && \
   apt-get -y upgrade && \
-  apt-get install -y build-essential apt-transport-https software-properties-common && \
+  apt-get install -y apt-utils build-essential apt-transport-https software-properties-common && \
   apt-get install -y nano ncftp vim net-tools wget ssh htop iputils-ping sudo git make curl man unzip openssh-server openssh-client rsync wget  && \
   rm -rf /var/lib/apt/lists/*
 
@@ -48,7 +48,7 @@ RUN set -e \
       && apt-get -y update \
       && apt-get -y dist-upgrade \
       && apt-get -y install --no-install-recommends --no-install-suggests \
-                            apt-utils g++ gcc gdebi-core \
+                            g++ gcc gdebi-core \
                             gfortran git libapparmor1 libblas-dev libcurl4-gnutls-dev libedit2 \
                             libgtk2.0-dev libssl1.0-dev liblapack-dev libmagick++-dev \
                             libmariadb-client-lgpl-dev libglu1-mesa-dev libopenmpi-dev libpq-dev \
