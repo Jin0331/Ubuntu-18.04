@@ -59,9 +59,11 @@ RUN set -e \
       && apt-get clean \
       && rm -rf /var/lib/apt/lists/*
 
-# install Python 3.7 & scala
+RUN Rscript -e 'install.packages(c("tidyverse", "IRkernel"))'
+
+# install Python 3.7
 RUN apt-get update \
-   && apt-get install -y scala python software-properties-common 
+   && apt-get install -y python software-properties-common 
 RUN add-apt-repository ppa:deadsnakes/ppa -y \
     && apt-get update && apt-get install -y build-essential libpq-dev libssl-dev openssl libffi-dev zlib1g-dev \
     && apt-get update && apt-get install -y python3-pip python3.7-dev python3.7 \
@@ -73,6 +75,16 @@ RUN pip3 install jupyter && jupyter notebook --generate-config  && \
     echo "c.NotebookApp.open_browser = False" >> ~/.jupyter/jupyter_notebook_config.py && \
     echo "c.NotebookApp.allow_root = True" >> ~/.jupyter/jupyter_notebook_config.py
 RUN pip3 install jupyterlab
+
+# R kernel for jupyter
+RUN Rscript -e 'IRkernel::installspec(user = FALSE)'
+
+# Scala install and kernel for jupyter
+RUN curl -Lo coursier https://git.io/coursier-cli && \
+    chmod +x coursier && \
+    ./coursier launch --fork almond --scala 2.12.11 -- --install && \
+    rm -f coursier
+
 EXPOSE 8888
 
 # vscode
