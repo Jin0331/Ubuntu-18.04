@@ -3,7 +3,8 @@
 1. **Jupyter Lab -- remote**
 2. **VScode -- remote**
 
-**<kernel>**
+## **kernel list**
+  
 * Python 3.7
 * R 3.6.3
 * Scala 2.12
