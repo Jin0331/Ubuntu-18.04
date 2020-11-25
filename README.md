@@ -1,7 +1,4 @@
-# Ubuntu-18.04
-
-1. **Jupyter Lab -- remote**
-2. **VScode -- remote**
+# Ubuntu 18.04 - JupyterLab/VScode docker image(base)
 
 ## **kernel list**
   
