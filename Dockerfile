@@ -1,9 +1,10 @@
 FROM ubuntu:18.04
 MAINTAINER sempre813
 
-ENV DEBIAN_FRONTEND=noninteractive  # 중요
+ENV DEBIAN_FRONTEND=noninteractive  
 RUN apt-get update -y
 
+USER root
 
 # Install program
 RUN \
@@ -58,14 +59,32 @@ RUN set -e \
       && apt-get clean \
       && rm -rf /var/lib/apt/lists/*
 
+# install Python 3.7 & scala
+RUN apt-get update \
+   && apt-get install -y scala python software-properties-common 
+RUN add-apt-repository ppa:deadsnakes/ppa -y \
+    && apt-get update && apt-get install -y build-essential libpq-dev libssl-dev openssl libffi-dev zlib1g-dev \
+    && apt-get update && apt-get install -y python3-pip python3.7-dev python3.7 \
+    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 
+# jupyter notebook or lab install
+RUN pip3 install jupyter && jupyter notebook --generate-config  && \
+    echo "c.NotebookApp.ip='*'" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.open_browser = False" >> ~/.jupyter/jupyter_notebook_config.py && \
+    echo "c.NotebookApp.allow_root = True" >> ~/.jupyter/jupyter_notebook_config.py
+RUN pip3 install jupyterlab
+EXPOSE 8888
 
+# vscode
+RUN wget https://github.com/cdr/code-server/releases/download/2.1692-vsc1.39.2/code-server2.1692-vsc1.39.2-linux-x86_64.tar.gz \
+    && tar xf code-server2.1692-vsc1.39.2-linux-x86_64.tar.gz \
+    && mv code-server2.1692-vsc1.39.2-linux-x86_64 vscode \
+    && rm -rf code-server2.1692-vsc1.39.2-linux-x86_64.tar.gz
+EXPOSE 8989
 
-  
 COPY bootstrap.sh /etc/bootstrap.sh
 RUN chown root.root /etc/bootstrap.sh
 RUN chmod 700 /etc/bootstrap.sh
-
 ENTRYPOINT ["/etc/bootstrap.sh"]
 
 RUN service ssh start
