@@ -92,11 +92,6 @@ RUN wget https://github.com/cdr/code-server/releases/download/2.1692-vsc1.39.2/c
     && tar xf code-server2.1692-vsc1.39.2-linux-x86_64.tar.gz \
     && mv code-server2.1692-vsc1.39.2-linux-x86_64 vscode \
     && rm -rf code-server2.1692-vsc1.39.2-linux-x86_64.tar.gz
+    
 EXPOSE 8989
 
-COPY bootstrap.sh /etc/bootstrap.sh
-RUN chown root.root /etc/bootstrap.sh
-RUN chmod 700 /etc/bootstrap.sh
-ENTRYPOINT ["/etc/bootstrap.sh"]
-
-RUN service ssh start
