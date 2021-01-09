@@ -70,7 +70,7 @@ RUN Rscript -e 'install.packages(c("tidyverse", "IRkernel"))'
 
 # python 3.6
 RUN apt-get update \
-   && apt-get install -y python python3-pip software-properties-common
+   && apt-get install -y python3 python3-pip software-properties-common
 
 # jupyter notebook or lab install
 RUN pip3 install jupyter && jupyter notebook --generate-config  && \
