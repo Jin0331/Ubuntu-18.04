@@ -61,6 +61,13 @@ RUN set -e \
 
 RUN Rscript -e 'install.packages(c("tidyverse", "IRkernel"))'
 
+# rstudio-server
+RUN apt-get update && apt-get install -y gdebi-core \
+    && wget https://download2.rstudio.org/server/bionic/amd64/rstudio-server-1.3.1093-amd64.deb \
+    && gdebi -n rstudio-server-1.3.1093-amd64.deb
+EXPOSE 8787
+
+
 # install Python 3.7
 # python 3.7 remove
 RUN add-apt-repository ppa:deadsnakes/ppa -y \
