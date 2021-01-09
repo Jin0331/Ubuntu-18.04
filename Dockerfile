@@ -62,12 +62,15 @@ RUN set -e \
 RUN Rscript -e 'install.packages(c("tidyverse", "IRkernel"))'
 
 # install Python 3.7
+# python 3.7 remove
+#RUN add-apt-repository ppa:deadsnakes/ppa -y \
+#    && apt-get update && apt-get install -y build-essential libpq-dev libssl-dev openssl libffi-dev zlib1g-dev \
+#    && apt-get update && apt-get install -y python3-pip python3.7-dev python3.7 \
+#    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
+
+# python 3.6
 RUN apt-get update \
    && apt-get install -y python software-properties-common 
-RUN add-apt-repository ppa:deadsnakes/ppa -y \
-    && apt-get update && apt-get install -y build-essential libpq-dev libssl-dev openssl libffi-dev zlib1g-dev \
-    && apt-get update && apt-get install -y python3-pip python3.7-dev python3.7 \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.7 2
 
 # jupyter notebook or lab install
 RUN pip3 install jupyter && jupyter notebook --generate-config  && \
